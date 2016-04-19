@@ -1,0 +1,188 @@
+2. Using the interpreter
+Source Code-Encoding
+	by defulat UTF-8, with std. lib. using ASCII identifiers
+	Can specify different encoding by adding special comment after #! line
+
+	# -*- coding: encoding -*-
+
+	list of possible encodings are in the PythLibRef in 'codecs' section
+
+
+3. An Informal Introduction to Python
+Python Comments
+	# this is how you start a comment
+	foo = 1 # this is a line comment
+		# line comments can't start in strings
+	text = "# This isn't a comment because it's in a string" # so don't do that
+
+Python as a Calculator
+	+, -, *, /
+	() for grouping
+	integers have type int -- big surprise right?
+	5.0, 5.5, 0.55, etc have type float
+	/ always returns a float
+	// does floor division
+	% does modululus division
+	** calculates powers
+	= is an assignment operator
+	error for vars without assignment -- groundbreaking stuff, right here
+	mixed type operations result in floats, not errors -- handy
+	when using interactive mode, _ is a variable assigned to the last printed expression
+		so,
+			2 + 2 --> 4
+			2 + _ --> 6
+	Also supports <Decimal> <Fraction> and built-in support for complex numbers
+
+Strings
+	strings can be enclosed in single or double quotes with same result (according to tutorial docs)
+		'oh, hey. this is a string' <--> "oh, hey. this is a string"
+	\ used to escape quotes
+	NEXT EXAMPLE RIPPED STRAIGHT FROM TUTORIAL 3.1.2
+		>>> 'spam eggs'  # single quotes
+		'spam eggs'
+		>>> 'doesn\'t'  # use \' to escape the single quote...
+		"doesn't"
+		>>> "doesn't"  # ...or use double quotes instead
+		"doesn't"
+		>>> '"Yes," he said.'
+		'"Yes," he said.'
+		>>> "\"Yes,\" he said."
+		'"Yes," he said.'
+		>>> '"Isn\'t," she said.'
+	In interactive interpreter, output string is enclosed in quotes and special characters are escaped with backslashes
+		this may look different from input because enclosing quotes may change
+		but the two strings are equivalent
+		>>>'bacon pancakes'
+		'bacon pancakes'
+		>>>"bacon pancakes"
+		'bacon pancakes'
+
+	using print() gives more readable output
+		omits enclosing quotes and prints escaped and special characters
+	if you do want print \ followed by a character (eg file paths) you can print the raw string
+	print a raw string by adding r before the first quote
+		>>>print(r'C:\foo\newfoo')
+		C:\foo\newfoo
+	print multi-line strings using """...""" or '''...'''
+		new lines are included automatically, but can kill it with \ at end of line
+		print("""\
+		cool, cool, cool
+		right, right, right
+		""")
+	strings can be concatenated with + and repeated with *
+		15 * 'na' + ' BATMAN!'
+	two or more string literals next to eachother are automatically concatenated
+		'Py' 'th' 'on'
+		'Python'
+	cat variables and literals together using +
+		>>>prefix = 'no'
+		>>>prefix + 'duh'
+		noduh
+	!!!getting errors when trying to concatenate int vars and string literals!!!
+		>>>number = 99
+		>>>drink = 'beer'
+		>>>'bottles of ' + drink
+		'bottles of beer'
+		>>>number + ' bottles of ' + drink
+		Traceback(most recent call last):
+		  File "<stdin>", line 1, in <module>
+		TypeError: unsupported operand type(s) for +: 'int' and 'str'
+	Strings can be indexed(subscripted) with the first character having index 0
+	there is NO CHARACTER TYPE, a character is a string of size one
+	WHY IS THERE NO CHAR PRIMITIVE TYPE?
+	indices can be positive(count from left) or negative (count from right)
+	negative indices start at -1 since 0 and -0 are the same the thing
+		>>> word = "racecar"
+		>>> word[0] #first character
+		'r'
+		>>> word[1] #second charcter
+		'a'
+		>>> word[-1] #last character
+		'r'
+		>>> word[-2] #second to last character
+	Word slicing will give you a substring
+		>>> word[0:4]
+		'race'
+		>>> word[4:]
+		'car'
+		>>> word[:4] + word[4:]
+	Omitted first index defaults to 0, omitted second default to size of string
+	so to get the last 4 letters of a string of unknown length
+		>>>word[-4:]
+		'ecar'
+	Attempting to use a string index that is too large results in an error
+	Attempting to use a slice index that is out of index fails gracefully
+		>>> word[42] # racecar
+		Tra...
+			...
+		IndexError: string index out of range
+		>>> word[4:42]
+		'car'
+		>>> word[42:]
+		''
+	Python strings are immutable
+	len() returns the length of a string
+		>>>len(word) #racecar
+		7
+Lists
+	comma-separated values between square brackets
+		since it's a list, and not a set, doesn't have to all be the same type
+	lists can be indexed and sliced
+		>>> odds = [1, 3, 5, 'seven']
+		>>> odds
+		[1, 3, 5, 'seven']
+		>>> odds[1]
+		3
+		>>> odds[2:]
+		[5, 'seven']
+	all lists operations return a new list of the requested elements -- shallow copy
+		>>> odds[:]
+		[1, 3, 5, 'seven']
+	lists support concatenation
+		>>> odds + [9, 11, 13]
+		[1, 3, 5, 'seven', 9, 11, 13]
+	lists are mutable, so overwriting is possible
+		>>> odds[3] = 7
+		>>> odds
+		[1, 3, 5, 7]
+	you can append to lists using append()
+		>>>odds.append(9)
+		>>>odds
+		[1, 3, 5, 7, 9]
+	you can assign to slices of lists, which can change size or clear it
+		>>>odds[3:5] = [8, 9, 10]
+		>>>odds
+		[1, 3, 5, 7, 8, 9, 10]
+		>>> odds[:] = []
+		>>> odds
+		[]
+		>>> odds[1,2,3,4,5,6,7,8,9,10]
+		>>> odds[1,2] = []
+		>>> odds
+		[1, 3, 4, 5, 6, 7, 8, 9, 10]
+	len(<list>) will return the length of a list
+	it is possible to nest lists
+		>>> a = [1, 2, 3]
+		>>> b = ['a', 'b', 'c']
+		>>> x = [a, b]
+		>>> x
+		[[1, 2, 3], ['a', 'b', 'c']]
+
+3.2 First Steps Towards Programming
+	multi assignment
+		>>>a, b = 0, 1
+		>>>a
+		0
+		>>>b
+		1
+	while loops
+		b < 10
+		b > 10
+		b == 10
+		b <= 10
+		b >= 10
+		b != 10
+		PARA EJEMPLA
+		>>>while b < 10:
+		...	print(b)
+		...	b = b + 1
